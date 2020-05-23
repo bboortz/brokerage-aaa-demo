@@ -30,6 +30,20 @@ The used components are used as docker container and will be started using docke
 * [httpbin](https://httpbin.org)
 
 
+# Architecture
+
+The overall architecture looks like this:
+![Overall Architecture](diagrams/architecture.png)
+
+These roles are known
+* application user - authenticates and is using the application
+* security account manager - manages accounts in IAM systems
+* security role manager - manages the roles in the broker
+* developer - has developed the application and is the defining the policies for an authorization
+
+
+
+
 # Preperation
 
 Add necessary host entries to /etc/host file
