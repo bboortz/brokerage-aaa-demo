@@ -26,7 +26,7 @@ The used components are used as docker container and will be started using docke
 * [postgresql](https://postgresql.org)
 * [keycloak](https://keycloak.org)
 * [keycloak](https://keycloak.org)
-* (keycloak-gatekeeper](https://github.com/keycloak/keycloak-gatekeeper)
+* [keycloak-gatekeeper](https://github.com/keycloak/keycloak-gatekeeper)
 * [httpbin](https://httpbin.org)
 
 
