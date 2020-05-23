@@ -1,0 +1,62 @@
+
+## Static configuration
+
+api:
+  insecure: true
+  dashboard: true
+  debug: true
+
+
+log:
+  level: INFO
+
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+
+providers:
+  file:
+    watch: true
+    filename: /config/traefik.yaml
+  docker:
+    watch: true
+    exposedByDefault: false
+
+
+
+## Dynamic configuration
+
+tls:
+  options:
+    default:
+      minVersion: VersionTLS12
+      cipherSuites:
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+        - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+
+  certificates:
+    - certFile: /ca/debug/debug.pem
+      keyFile: /ca/debug/debug-key.pem
+      stores:
+        - default
+    - certFile: /ca/app/app.pem
+      keyFile: /ca/app/app-key.pem
+      stores:
+        - default
+    - certFile: /ca/keycloak/keycloak.pem
+      keyFile: /ca/keycloak/keycloak-key.pem
+      stores:
+        - default
+
+  stores:
+    default:
+      defaultCertificate:
+       certFile: /ca/app/app.pem
+       keyFile: /ca/app/app-key.pem

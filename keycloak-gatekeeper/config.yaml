@@ -1,0 +1,49 @@
+# is the url for retrieve the OpenID configuration - normally the <server>/auth/realm/<realm_name>
+discovery-url: https://api.keycloak.aaa.demo/auth/realms/broker
+# the client id for the 'client' application
+client-id: test-client
+# the secret associated to the 'client' application
+client-secret: afa5d353-2989-46d9-a4a1-acaab9c714d4
+
+# the interface definition you wish the proxy to listen, all interfaces is specified as ':<port>', unix sockets as unix://<REL_PATH>|</ABS PATH>
+listen: :8443
+#
+#
+encryption_key: AgXa7xRcoClDEU0ZDSH4X0XhL5Qy2Z2j
+redirection-url: https://app.aaa.demo
+upstream-url: http://httpbin:80
+upstream-ca: /certs/ca.pem
+skip-upstream-tls-verify: false
+skip-openid-provider-tls-verify: true
+
+tls-cert: /certs/app.pem
+tls-private-key: /certs/app-key.pem
+tls-ca-certificate: /certs/ca.pem
+
+
+
+resources:
+- uri: /admin*
+  methods:
+  - GET
+  roles:
+  - client:test1
+  - client:test2
+  require-any-role: true
+  groups:
+  - admins
+  - users
+- uri: /backend*
+  roles:
+  - client:test1
+- uri: /public/*
+  white-listed: true
+- uri: /favicon
+  white-listed: true
+- uri: /css/*
+  white-listed: true
+- uri: /img/*
+  white-listed: true
+headers:
+  myheader1: value_1
+  myheader2: value_2

@@ -1,0 +1,32 @@
+{
+  "realm" : "upstreamidp1",
+  "users" : [ {
+    "id" : "ecebed7f-b513-40d3-9ccc-ceb942090259",
+    "createdTimestamp" : 1590168767421,
+    "username" : "idp1user1",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "firstName" : "idp1user1",
+    "lastName" : "idp1user1",
+    "email" : "idp1user1@aaa.demo",
+    "attributes" : {
+      "saml.persistent.name.id.for.https://api.keycloak.aaa.demo/auth/realms/broker" : [ "G-b4db36a1-28c1-41d1-bfc8-945de56e90d5" ]
+    },
+    "credentials" : [ {
+      "id" : "fb31fb43-6d35-4c39-9726-f2a12cb41fdf",
+      "type" : "password",
+      "createdDate" : 1590168787297,
+      "secretData" : "{\"value\":\"rzACKJSU0cmdQ52V833CR8YbTuaP6Ldc/ZL/yFGiXAyH5Fv/VDb3ya/PxrxWflm7M8D0eN5IRqgqRmeoz72klw==\",\"salt\":\"B3CD1uCUFNJtFiqQV9xVBQ==\"}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\"}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "uma_authorization", "offline_access" ],
+    "clientRoles" : {
+      "account" : [ "manage-account", "view-profile" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  } ]
+}

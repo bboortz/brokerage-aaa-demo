@@ -1,0 +1,95 @@
+{
+  "realm" : "broker",
+  "users" : [ {
+    "id" : "ce047a05-0082-43c3-9583-40464c47beee",
+    "createdTimestamp" : 1590231042851,
+    "username" : "brokeruser1",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "firstName" : "brokeruser1",
+    "lastName" : "brokeruser1",
+    "email" : "brokeruser1@aaa.demo",
+    "credentials" : [ {
+      "id" : "dea11b4d-fda6-459c-807f-55c704d21937",
+      "type" : "password",
+      "createdDate" : 1590231052562,
+      "secretData" : "{\"value\":\"TW1UGtEH8CNsicVS4FrsuwU7zRhV56kN4Pc038cvFIQHWs/69ZLO8qQrZDVSWzYODHw689VY9CvIBI3Wb9rxTg==\",\"salt\":\"S2UddNMEyiS+nbPuBhCX0g==\"}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\"}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "uma_authorization", "offline_access" ],
+    "clientRoles" : {
+      "account" : [ "manage-account", "view-profile" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "3e7448e5-b20e-4d0d-97f6-8398ec87834b",
+    "createdTimestamp" : 1590247577376,
+    "username" : "g-4ac2d0c3-7e78-4e87-8590-f10894325e29",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : false,
+    "firstName" : "idp2user1",
+    "lastName" : "idp2user1",
+    "email" : "idp2user1@aaa.demo",
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "federatedIdentities" : [ {
+      "identityProvider" : "broker-upstreamidp2-saml",
+      "userId" : "G-4ac2d0c3-7e78-4e87-8590-f10894325e29",
+      "userName" : "g-4ac2d0c3-7e78-4e87-8590-f10894325e29"
+    } ],
+    "realmRoles" : [ "uma_authorization", "offline_access", "ROLE_IDP2" ],
+    "clientRoles" : {
+      "account" : [ "manage-account", "view-profile" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "b5770f64-e324-4836-ba7c-9ef842cc1410",
+    "createdTimestamp" : 1590246413526,
+    "username" : "g-b4db36a1-28c1-41d1-bfc8-945de56e90d5",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "firstName" : "idp1user1",
+    "lastName" : "idp1user1",
+    "email" : "idp1user1@aaa.demo",
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "federatedIdentities" : [ {
+      "identityProvider" : "broker-upstreamidp1-saml",
+      "userId" : "G-b4db36a1-28c1-41d1-bfc8-945de56e90d5",
+      "userName" : "g-b4db36a1-28c1-41d1-bfc8-945de56e90d5"
+    } ],
+    "realmRoles" : [ "uma_authorization", "offline_access", "ROLE_IDP1" ],
+    "clientRoles" : {
+      "account" : [ "manage-account", "view-profile" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "b1f5865b-4c44-4d41-8c76-951bd623cf81",
+    "createdTimestamp" : 1590250750827,
+    "username" : "service-account-test-client",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : false,
+    "serviceAccountClientId" : "test-client",
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "uma_authorization", "offline_access" ],
+    "clientRoles" : {
+      "test-client" : [ "uma_protection" ],
+      "account" : [ "manage-account", "view-profile" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  } ]
+}

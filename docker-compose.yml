@@ -1,0 +1,152 @@
+version: '2.3'
+
+volumes:
+  postgres_data:
+    driver: local
+
+
+services:
+  traefik:
+    image: traefik
+    container_name: traefik
+    restart: 'always'
+    command: >
+      --configfile=/config/traefik.yaml
+    labels:
+      traefik.enable: false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik-config:/config
+      - ./ca:/ca
+    ports:
+      - 80:80
+      - 443:443
+      - 3000:8080
+    networks:
+      - AAA-brokerage-network
+      - AAA-app-network
+
+  httpbin:
+    image: kennethreitz/httpbin
+    restart: 'always'
+    labels:
+      traefik.enable: true
+      traefik.http.routers.httpbin.rule: Host(`debug.aaa.demo`)
+      traefik.http.routers.httpbin.entrypoints: web, websecure
+      traefik.http.routers.httpbin.tls: true
+      traefik.http.routers.httpbin.tls.options: default
+      traefik.http.routers.httpbin.tls.domains[0].main: debug.aaa.demo
+      traefik.http.services.httpbin.loadbalancer.server.port: 80
+    expose:
+      - 80
+    networks:
+      - AAA-app-network
+
+  postgres:
+    image: 'postgres:alpine'
+    restart: 'always'
+    environment:
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: keycloak
+      POSTGRES_HOST: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    labels:
+      traefik.enable: false
+    networks:
+      - AAA-brokerage-network
+
+  keycloak:
+    image: jboss/keycloak
+    restart: 'always'
+    depends_on:
+      - postgres
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: postgres
+      DB_PORT: 5432
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: 11111111
+      KEYCLOAK_LOGLEVEL: INFO
+      PROXY_ADDRESS_FORWARDING: "true"
+      JGROUPS_DISCOVERY_PROTOCOL: JDBC_PING
+      JGROUPS_DISCOVERY_PROPERTIES: datasource_jndi_name=java:jboss/datasources/KeycloakDS,info_writer_sleep_time=500,initialize_sql="CREATE TABLE IF NOT EXISTS JGROUPSPING ( own_addr varchar(200) NOT NULL, cluster_name varchar(200) NOT NULL, created timestamp default current_timestamp, ping_data BYTEA, constraint PK_JGROUPSPING PRIMARY KEY (own_addr, cluster_name))"
+    command:
+      - "-b 0.0.0.0 -bmanagement 0.0.0.0 -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/tmp/keycloak-import -Dkeycloak.migration.strategy=OVERWRITE_EXISTING"
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:8443/auth/realms/broker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    labels:
+      traefik.enable: false
+    volumes:
+      - ./keycloak-import:/tmp/keycloak-import
+      - ./ca/keycloak:/etc/x509/https
+    expose:
+      - 8080
+      - 8443
+      - 9990
+    networks:
+      - AAA-brokerage-network
+
+  caddy_keycloak:
+    image: caddy
+    restart: 'always'
+    depends_on:
+      - keycloak
+    labels:
+      traefik.enable: true
+      traefik.tcp.routers.caddy-keycloak.rule: HostSNI(`api.keycloak.aaa.demo`)
+      traefik.tcp.routers.caddy-keycloak.entrypoints: web, websecure
+      traefik.tcp.routers.caddy-keycloak.service: caddy-keycloak
+      traefik.tcp.routers.caddy-keycloak.tls.passthrough: true
+      traefik.tcp.services.caddy-keycloak.loadbalancer.server.port: 443
+    volumes:
+      - ./caddy-config/Caddyfile:/etc/caddy/Caddyfile
+      - ./ca/keycloak:/certs
+    expose:
+      - 8080
+      - 8443
+      - 443
+    networks:
+      - AAA-brokerage-network
+      - AAA-app-network
+
+  keycloak_gatekeeper:
+    image: keycloak/keycloak-gatekeeper
+    restart: 'always'
+    depends_on:
+      - caddy_keycloak
+    command:
+      - "--config=/config.yaml"
+    labels:
+      traefik.enable: true
+      traefik.tcp.routers.keycloak-gatekeeper.rule: HostSNI(`app.aaa.demo`)
+      traefik.tcp.routers.keycloak-gatekeeper.entrypoints: web, websecure
+      traefik.tcp.routers.keycloak-gatekeeper.service: keycloak-gatekeeper
+      traefik.tcp.routers.keycloak-gatekeeper.tls.passthrough: true
+      traefik.tcp.services.keycloak-gatekeeper.loadbalancer.server.port: 8443
+    volumes:
+      - ./keycloak-gatekeeper/config.yaml:/config.yaml
+      - ./ca/app:/certs
+    expose:
+      - 8443
+    networks:
+      - AAA-brokerage-network
+      - AAA-app-network
+    links:
+      - caddy_keycloak:api.keycloak.aaa.demo
+
+
+networks:
+  AAA-brokerage-network:
+  AAA-app-network:

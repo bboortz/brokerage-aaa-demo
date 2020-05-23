@@ -1,0 +1,5 @@
+:8080, :443, :8443
+
+tls /certs/keycloak.pem /certs/keycloak-key.pem 
+
+reverse_proxy keycloak:8080
