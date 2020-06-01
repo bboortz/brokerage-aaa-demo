@@ -2,12 +2,12 @@
 
 This project is demonstrating how to setup authentication, authorization and access control using a brokerage. With a brokerage the authentication will be delegated to an upstream idp.
 * Authentication is happening using a keycloak with this realms
- * upstreamidp1 for user base 1
- * upstreamidp2 for user base 2
+  * upstreamidp1 for user base 1
+  * upstreamidp2 for user base 2
 * Authorization is happening using
- * keycloak-proxy which is protecting the access to an example application
+  * keycloak-proxy which is protecting the access to an example application
 * Access Control is happening using a keycloak which acts a a broker. it is in charge of
- * defining the roles for dedicated users.
+  * defining the roles for dedicated users.
 
 
 # Requirements
@@ -82,25 +82,29 @@ It starts several services:
 # Credentials
 
 ## Keycloak Master
+
 * admin / 11111111
 
 ## Keycloak Broker
+
 * brokeruser1 / brokeruser1
 
 ## Keycloak UpstreamIDP1
+
 * idp1user1 / idp1user1
 
 ## Keycloak UpstreamIDP2
+
 * idp2user1 / idp2user1
 
 
 # Links
 
 * Keycloak Broker SAML SP Descriptor URL for Upstreamidp1
- * https://api.keycloak.aaa.demo/auth/realms/broker/broker/broker-upstreamidp1-saml/endpoint/descriptor
+  * https://api.keycloak.aaa.demo/auth/realms/broker/broker/broker-upstreamidp1-saml/endpoint/descriptor
 * Keycloak Broker SAML SP Descriptor URL for Upstreamidp2
- * https://api.keycloak.aaa.demo/auth/realms/broker/broker/broker-upstreamidp2-saml/endpoint/descriptor
+  * https://api.keycloak.aaa.demo/auth/realms/broker/broker/broker-upstreamidp2-saml/endpoint/descriptor
 * Keyclaok Upstreamidp1 SAML IDP Descriptor URL
- * https://api.keycloak.aaa.demo/auth/realms/upstreamidp1/protocol/saml/descriptor
+  * https://api.keycloak.aaa.demo/auth/realms/upstreamidp1/protocol/saml/descriptor
 * Keyclaok Upstreamidp2 SAML IDP Descriptor URL
- * https://api.keycloak.aaa.demo/auth/realms/upstreamidp2/protocol/saml/descriptor
+  * https://api.keycloak.aaa.demo/auth/realms/upstreamidp2/protocol/saml/descriptor
